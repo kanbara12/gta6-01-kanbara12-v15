@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>SUNCOAST: HEATLINE — gta6-01</title>
+<link rel="icon" href="favicon.ico">
+<style>
+  html,body{margin:0;padding:0;width:100%;height:100%;overflow:hidden;background:#160d1c;
+    font-family:Verdana,Geneva,sans-serif;color:#fff;}
+  #c{position:fixed;inset:0;width:100%;height:100%;display:block;}
+  .panel{position:fixed;background:rgba(10,12,20,.8);border:1px solid rgba(255,255,255,.22);
+    border-radius:10px;padding:10px 14px;box-shadow:0 4px 18px rgba(0,0,0,.45);z-index:5;}
+  #mission{top:16px;left:16px;max-width:440px;}
+  #mission h1{margin:0 0 4px;font-size:19px;color:#ffb02e;letter-spacing:.5px;}
+  #mission .obj{font-size:14px;color:#eee;margin:2px 0;}
+  #mission .sub{font-size:13px;color:#c6c6c6;margin:2px 0;}
+  #mission .timer{font-size:14px;color:#9fd8ff;margin-top:4px;}
+  #status{top:16px;right:16px;text-align:right;min-width:215px;}
+  #cash{font-size:30px;font-weight:800;color:#4be364;line-height:1;}
+  #hpRep{font-size:14px;margin-top:6px;color:#eee;}
+  #repbar{width:150px;height:7px;background:#333;border-radius:4px;margin:6px 0 4px auto;overflow:hidden;}
+  #repfill{height:100%;width:0%;background:linear-gradient(90deg,#ffb02e,#ff5a3c);}
+  #stars{font-size:20px;letter-spacing:3px;color:#ffd23e;}
+  #stars .off{color:#555;}
+  #policeLine{font-size:13px;color:#ff9a9a;}
+  #police{top:196px;right:16px;min-width:255px;}
+  #police h2{margin:0 0 6px;font-size:14px;color:#ff6b6b;letter-spacing:1px;}
+  #police .row{display:flex;justify-content:space-between;gap:10px;font-size:13px;padding:2px 0;color:#f0f0f0;}
+  #police .row b{color:#ffd23e;}
+  #radio{left:16px;bottom:16px;font-size:13px;}
+  #radio .st{color:#ffb02e;font-weight:700;}
+  #weapons{margin-top:6px;display:flex;gap:6px;}
+  #weapons .w{border:1px solid #666;border-radius:5px;padding:3px 7px;font-size:12px;color:#ccc;}
+  #weapons .w.on{border-color:#ffb02e;color:#ffb02e;background:rgba(255,176,46,.15);}
+  #abilities{margin-top:6px;font-size:12px;color:#ddd;line-height:1.7;}
+  #abilities .k{display:inline-block;border:1px solid #999;border-radius:4px;padding:0 5px;margin-right:4px;font-weight:700;}
+  #abilities .disc{display:inline-block;width:18px;height:18px;border-radius:50%;background:#ffb02e;color:#111;
+    text-align:center;line-height:18px;font-weight:800;font-size:12px;margin-right:4px;}
+  #speedo{left:50%;transform:translateX(-50%);bottom:16px;text-align:center;min-width:175px;}
+  #speed{font-size:38px;font-weight:800;line-height:1;}
+  #speed small{font-size:14px;color:#bbb;}
+  #bars{font-size:12px;color:#ddd;margin-top:2px;}
+  #bars .bar{width:150px;height:6px;background:#333;border-radius:3px;margin:2px auto;overflow:hidden;}
+  #bars .fill{height:100%;background:#4be364;}
+  #minimapBox{right:16px;bottom:16px;text-align:center;padding:8px;}
+  #minimap{border-radius:50%;border:2px solid rgba(255,255,255,.4);display:block;}
+  #mapLabel{font-size:12px;color:#eee;margin-top:4px;}
+  #dialog{left:50%;transform:translateX(-50%);bottom:150px;max-width:560px;display:flex;gap:10px;align-items:flex-start;}
+  #dialog .port{width:46px;height:46px;border-radius:50%;background:#ffb02e;color:#111;flex:0 0 46px;
+    display:flex;align-items:center;justify-content:center;font-size:22px;font-weight:800;}
+  #dialog .who{font-size:13px;color:#ffb02e;font-weight:700;}
+  #dialog .txt{font-size:15px;color:#fff;line-height:1.35;}
+  #popup{left:50%;transform:translateX(-50%);bottom:250px;font-size:22px;font-weight:800;color:#ffe27a;
+    text-shadow:0 2px 8px #000;background:none;border:none;box-shadow:none;padding:0;}
+  #cross{left:50%;top:50%;transform:translate(-50%,-50%);font-size:26px;color:#fff;
+    text-shadow:0 0 6px #000;background:none;border:none;box-shadow:none;padding:0;}
+  #title{position:fixed;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;
+    background:linear-gradient(180deg,rgba(20,8,30,.55),rgba(20,8,30,.85));z-index:10;text-align:center;}
+  #title h1{font-size:56px;margin:0;color:#ffb02e;letter-spacing:4px;text-shadow:0 4px 24px #000;}
+  #title h2{font-size:20px;margin:8px 0 0;color:#fff;font-weight:400;letter-spacing:2px;}
+  #title p{font-size:15px;color:#ddd;max-width:620px;line-height:1.6;}
+  #title .enter{margin-top:22px;font-size:18px;color:#4be364;font-weight:700;}
+  #pause{position:fixed;inset:0;display:none;align-items:center;justify-content:center;background:rgba(8,8,16,.72);z-index:9;}
+  #pause .card{background:rgba(16,18,28,.95);border:1px solid #555;border-radius:12px;padding:24px 30px;min-width:380px;}
+  #pause h1{margin:0 0 10px;font-size:24px;color:#ffb02e;}
+  #pause .stat{font-size:14px;color:#eee;line-height:1.8;}
+  #pause button{display:block;width:100%;margin:8px 0 0;padding:10px;font-size:16px;background:#ffb02e;color:#111;
+    border:none;border-radius:8px;cursor:pointer;font-weight:700;}
+  #pause button.alt{background:#333;color:#fff;}
+  #toast{left:50%;top:70px;transform:translateX(-50%);font-size:16px;color:#ffe27a;font-weight:700;
+    text-shadow:0 2px 8px #000;background:none;border:none;box-shadow:none;padding:0;}
+  .hidden{display:none !important;}
+</style>
+</head>
+<body>
+<canvas id="c"></canvas>
+<div id="hud">
+  <div id="mission" class="panel"><h1 id="jobTitle">JOB 1/8 • A FAVOR IN THE HEAT</h1>
+    <div class="obj" id="jobObj">Meet the fixer Rae at the glowing marker</div>
+    <div class="sub" id="jobNext">NEXT: LOOSE CARGO</div>
+    <div class="sub" id="jobMark">MARKER 44 m</div>
+    <div class="timer" id="jobTimer">0:47 / PAR 1:00</div></div>
+  <div id="status" class="panel"><div id="cash">$1,250</div>
+    <div id="hpRep">HP 100 &nbsp;•&nbsp; REP 0</div><div id="repbar"><div id="repfill"></div></div>
+    <div id="stars">☆☆☆☆☆</div><div id="policeLine">POLICE: CLEAR</div></div>
+  <div id="police" class="panel hidden"><h2>POLICE UNITS</h2><div id="policeRows"></div></div>
+  <div id="radio" class="panel"><div><span class="st" id="radioName">SHORELINE 96.7</span> • <span id="radioTrack">Sunset Run</span></div>
+    <div id="weapons"></div><div id="abilities"></div></div>
+  <div id="speedo" class="panel"><div id="speed">0 <small>km/h</small></div>
+    <div id="bars"><div>FUEL <span id="fuelPct">100%</span></div><div class="bar"><div class="fill" id="fuelFill" style="width:100%"></div></div>
+    <div>COND <span id="condPct">100%</span></div><div class="bar"><div class="fill" id="condFill" style="width:100%"></div></div>
+    <div id="carLabel">HEATLINE GT — COND 100%</div></div></div>
+  <div id="minimapBox" class="panel"><canvas id="minimap" width="150" height="150"></canvas>
+    <div id="mapLabel">BEACHFRONT • Beachfront Rd<br>GOLDEN • 0 JOBS DONE</div></div>
+  <div id="dialog" class="panel hidden"><div class="port" id="dlgPort">R</div>
+    <div><div class="who" id="dlgWho">RAE • FIXER</div><div class="txt" id="dlgText"></div></div></div>
+  <div id="popup" class="panel hidden"></div>
+  <div id="cross" class="panel hidden">+</div>
+  <div id="toast" class="panel hidden"></div>
+</div>
+<div id="title"><h1>SUNCOAST: HEATLINE</h1><h2>AN OPEN-WORLD CRIME STORY • 8 JOBS • $22,450 ON THE LINE</h2>
+  <p>Suncoast after sunset: meet Rae, run the cargo, sweep the yard, lose the heat.
+  WASD drive / walk • E enter &amp; exit car • Click to shoot (on foot) • Space drift •
+  P pause • H hide HUD • R radio • M mute • Z / X / C crew calls.</p>
+  <div class="enter">PRESS ENTER TO ENTER THE CITY</div></div>
+<div id="pause"><div class="card"><h1>PAUSED</h1><div class="stat" id="pauseStats"></div>
+  <button id="btnResume">RESUME</button><button id="btnSave" class="alt">SAVE</button>
+  <button id="btnLoad" class="alt">LOAD</button></div></div>
+<script type="importmap">{"imports":{"three":"./vendor/three.module.min.js"}}</script>
+<script type="module" src="./src/main.js"></script>
+</body>
+</html>
